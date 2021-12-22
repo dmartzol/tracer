@@ -35,10 +35,10 @@ fn color(r: &Ray, world: &Hitable) -> Vector {
 }
 
 fn main() {
-    let nx: u16 = 200;
-    let ny: u16 = 100;
+    let image_width: u16 = 200;
+    let image_height: u16 = 100;
 
-    print!("P3\n{} {}\n255\n", nx, ny);
+    print!("P3\n{} {}\n255\n", image_width, image_height);
 
     let lower_left_corner = Vector::new(-2.0, -1.0, -1.0);
     let horizontal = Vector::new(4.0, 0.0, 0.0);
@@ -51,16 +51,16 @@ fn main() {
     world.push(Box::new(sphere1));
     world.push(Box::new(sphere2));
 
-    for j in (0..ny).rev() {
-        for i in 0..nx {
-            let u = (i as f64) / (nx as f64);
-            let v = (j as f64) / (ny as f64);
+    for j in (0..image_height).rev() {
+        for i in 0..image_width {
+            let u = (i as f64) / (image_width as f64);
+            let v = (j as f64) / (image_height as f64);
             let r = Ray::new(origin, lower_left_corner + u * horizontal + v * vertical);
-            let col = color(&r, world);
-            let ir = (255.99 * col.x()) as i64;
-            let ig = (255.99 * col.y()) as i64;
-            let ib = (255.99 * col.z()) as i64;
-            print!("{} {} {}\n", ir, ig, ib);
+            // let col = color(&r, world);
+            // let ir = (255.99 * col.x()) as i64;
+            // let ig = (255.99 * col.y()) as i64;
+            // let ib = (255.99 * col.z()) as i64;
+            // print!("{} {} {}\n", ir, ig, ib);
         }
     }
 }
