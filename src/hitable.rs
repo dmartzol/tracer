@@ -34,7 +34,7 @@ impl HitRecord {
             self.front_face = false;
         } else {
             // ray is outside the object
-            self.normal = -1.0 * outward_normal;
+            self.normal = outward_normal;
             self.front_face = true;
         }
     }

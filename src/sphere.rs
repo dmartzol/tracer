@@ -2,6 +2,7 @@ use crate::hitable::{HitRecord, Hitable};
 use crate::ray::Ray;
 use crate::vector::Vector;
 
+#[derive(Copy, Clone)]
 pub struct Sphere {
     center: Vector,
     radius: f64,
@@ -17,6 +18,9 @@ impl Sphere {
     pub fn radius(&self) -> f64 {
         self.radius
     }
+    pub fn normal_at(self, p: Vector) -> Vector {
+        (p - self.center).unit()
+    }
 }
 
 impl Hitable for Sphere {
@@ -30,18 +34,18 @@ impl Hitable for Sphere {
             let root = (-b - discriminant.sqrt()) / a;
             if root < t_max && root > t_min {
                 let p = r.at(root);
-                let outward_normal = (p - self.center()) / self.radius();
-                let normal = (p - self.center()) / self.radius();
-                let record = HitRecord::new(root, p, normal, true);
+                let outward_normal = self.normal_at(p);
+                let record = HitRecord::new(root, p, outward_normal, false);
                 record.set_face_normal(r, outward_normal);
                 return Some(record);
-                // return Some(HitRecord::new(t, p, normal, true));
             }
             let root = (-b + discriminant.sqrt()) / a;
             if root < t_max && root > t_min {
                 let p = r.at(root);
-                let normal = (p - self.center()) / self.radius();
-                return Some(HitRecord::new(root, p, normal, true));
+                let outward_normal = self.normal_at(p);
+                let record = HitRecord::new(root, p, outward_normal, false);
+                record.set_face_normal(r, outward_normal);
+                return Some(record);
             }
         }
         return None;
