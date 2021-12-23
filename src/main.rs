@@ -4,9 +4,15 @@ mod sphere;
 mod vector;
 
 use hitable::{Hitable, HitableList};
+use rand::Rng; // 0.8.0
 use ray::Ray;
 use sphere::Sphere;
 use vector::Vector;
+
+fn random_float() -> f64 {
+    let mut rng = rand::thread_rng();
+    return rng.gen_range(0.0..1.0);
+}
 
 fn color(r: &Ray, world: &HitableList) -> Vector {
     if let Some(hit) = world.hit(r, 0.0, f64::MAX) {
@@ -20,7 +26,7 @@ fn color(r: &Ray, world: &HitableList) -> Vector {
 fn main() {
     // Image dimensions
     let aspect_ratio = 16.0 / 9.0;
-    let image_width: u16 = 800;
+    let image_width: u16 = 400;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
