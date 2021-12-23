@@ -1,3 +1,4 @@
+use crate::hitable::{HitRecord, Hitable};
 use crate::ray::Ray;
 use crate::vector::Vector;
 
@@ -19,22 +20,26 @@ impl Sphere {
 }
 
 impl Hitable for Sphere {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64, rec: &HitRecord) -> bool {
+    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let oc = r.origin() - self.center();
         let a = r.direction().dot(r.direction());
         let b = oc.dot(r.direction());
         let c = oc.dot(oc) - self.radius.powf(2.0);
         let discriminant = b.powf(2.0) - a * c;
         if discriminant > 0.0 {
-            let mut temp = (-b - discriminant.sqrt()) / a;
-            if temp < t_max && temp > t_min {
-                return true;
+            let t = (-b - discriminant.sqrt()) / a;
+            if t < t_max && t > t_min {
+                let p = r.at(t);
+                let normal = (p - self.center()) / self.radius();
+                return Some(HitRecord::new(t, p, normal));
             }
-            temp = (-b + discriminant.sqrt()) / a;
-            if temp < t_max && temp > t_min {
-                return true;
+            let t = (-b + discriminant.sqrt()) / a;
+            if t < t_max && t > t_min {
+                let p = r.at(t);
+                let normal = (p - self.center()) / self.radius();
+                return Some(HitRecord::new(t, p, normal));
             }
         }
-        return false;
+        return None;
     }
 }

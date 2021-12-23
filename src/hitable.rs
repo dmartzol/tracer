@@ -23,7 +23,7 @@ impl HitRecord {
 }
 
 pub trait Hitable {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64, rec: &HitRecord) -> bool;
+    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
 }
 
 pub struct HitableList {
@@ -34,20 +34,19 @@ impl HitableList {
     pub fn new(list: Vec<Box<dyn Hitable>>) -> HitableList {
         HitableList { list }
     }
-    pub fn push(self, v: Box<Hitable>) {
+    pub fn push(mut self, v: Box<dyn Hitable>) {
         self.list.push(v);
     }
 }
 
 impl Hitable for HitableList {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64, rec: &HitRecord) -> bool {
+    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let mut closest_so_far = t_max;
-        let temp_rec;
-        let hit_anything = false;
+        let mut hit_anything: Option<HitRecord> = None;
         for h in self.list.iter() {
-            if h.hit(r, t_min, closest_so_far, &temp_rec) {
-                hit_anything = true;
-                closest_so_far = temp_rec.t;
+            if let Some(hit) = h.hit(r, t_min, closest_so_far) {
+                closest_so_far = hit.t;
+                hit_anything = Some(hit);
             }
         }
         return hit_anything;
