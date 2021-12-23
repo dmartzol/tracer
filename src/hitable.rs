@@ -18,13 +18,13 @@ impl HitRecord {
             front_face,
         }
     }
-    pub fn t(&self) -> f64 {
+    pub fn t(self) -> f64 {
         self.t
     }
-    pub fn p(&self) -> Vector {
+    pub fn p(self) -> Vector {
         self.p
     }
-    pub fn normal(&self) -> Vector {
+    pub fn normal(self) -> Vector {
         self.normal
     }
     pub fn set_face_normal(mut self, r: &Ray, outward_normal: Vector) {

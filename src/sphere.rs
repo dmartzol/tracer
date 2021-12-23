@@ -12,10 +12,10 @@ impl Sphere {
     pub fn new(center: Vector, radius: f64) -> Sphere {
         Sphere { center, radius }
     }
-    pub fn center(&self) -> Vector {
+    pub fn center(self) -> Vector {
         self.center
     }
-    pub fn radius(&self) -> f64 {
+    pub fn radius(self) -> f64 {
         self.radius
     }
     pub fn normal_at(self, p: Vector) -> Vector {
