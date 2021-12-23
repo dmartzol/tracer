@@ -27,17 +27,21 @@ impl Hitable for Sphere {
         let c = oc.dot(oc) - self.radius.powf(2.0);
         let discriminant = b.powf(2.0) - a * c;
         if discriminant > 0.0 {
-            let t = (-b - discriminant.sqrt()) / a;
-            if t < t_max && t > t_min {
-                let p = r.at(t);
+            let root = (-b - discriminant.sqrt()) / a;
+            if root < t_max && root > t_min {
+                let p = r.at(root);
+                let outward_normal = (p - self.center()) / self.radius();
                 let normal = (p - self.center()) / self.radius();
-                return Some(HitRecord::new(t, p, normal));
+                let record = HitRecord::new(root, p, normal, true);
+                record.set_face_normal(r, outward_normal);
+                return Some(record);
+                // return Some(HitRecord::new(t, p, normal, true));
             }
-            let t = (-b + discriminant.sqrt()) / a;
-            if t < t_max && t > t_min {
-                let p = r.at(t);
+            let root = (-b + discriminant.sqrt()) / a;
+            if root < t_max && root > t_min {
+                let p = r.at(root);
                 let normal = (p - self.center()) / self.radius();
-                return Some(HitRecord::new(t, p, normal));
+                return Some(HitRecord::new(root, p, normal, true));
             }
         }
         return None;

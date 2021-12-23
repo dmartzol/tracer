@@ -10,7 +10,7 @@ use vector::Vector;
 
 fn color(r: &Ray, world: &HitableList) -> Vector {
     if let Some(hit) = world.hit(r, 0.0, f64::MAX) {
-        return 0.5 * hit.normal() + Vector::new(1.0, 1.0, 1.0);
+        return 0.5 * (hit.normal() + Vector::new(1.0, 1.0, 1.0));
     } else {
         let t = 0.5 * (r.direction().unit().y() + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);

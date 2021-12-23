@@ -1,15 +1,22 @@
 use crate::ray::Ray;
 use crate::vector::Vector;
 
+#[derive(Copy, Clone)]
 pub struct HitRecord {
     t: f64,
     p: Vector,
     normal: Vector,
+    front_face: bool,
 }
 
 impl HitRecord {
-    pub fn new(t: f64, p: Vector, normal: Vector) -> HitRecord {
-        HitRecord { t, p, normal }
+    pub fn new(t: f64, p: Vector, normal: Vector, front_face: bool) -> HitRecord {
+        HitRecord {
+            t,
+            p,
+            normal,
+            front_face,
+        }
     }
     pub fn t(&self) -> f64 {
         self.t
@@ -19,6 +26,17 @@ impl HitRecord {
     }
     pub fn normal(&self) -> Vector {
         self.normal
+    }
+    pub fn set_face_normal(mut self, r: &Ray, outward_normal: Vector) {
+        if r.direction().dot(outward_normal) > 0.0 {
+            // ray is inside the object
+            self.normal = -1.0 * outward_normal;
+            self.front_face = false;
+        } else {
+            // ray is outside the object
+            self.normal = -1.0 * outward_normal;
+            self.front_face = true;
+        }
     }
 }
 
