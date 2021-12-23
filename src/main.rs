@@ -18,8 +18,10 @@ fn color(r: &Ray, world: &HitableList) -> Vector {
 }
 
 fn main() {
-    let image_width: u16 = 200;
-    let image_height: u16 = 100;
+    // Image dimensions
+    let aspect_ratio = 16.0 / 9.0;
+    let image_width: u16 = 800;
+    let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
