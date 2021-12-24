@@ -2,6 +2,7 @@ mod camera;
 mod hitable;
 mod ray;
 mod sphere;
+mod tracer;
 mod vector;
 
 use camera::Camera;
@@ -10,6 +11,7 @@ use rand::Rng; // 0.8.0
 use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
+use tracer::clamp;
 use vector::Vector;
 
 fn random_float() -> f64 {
@@ -54,12 +56,14 @@ fn main() {
                 let ray = camera.get_ray(u, v);
                 pixel_color = pixel_color + color(&ray, &world);
             }
-            let scale = 1.0 / samples_per_pixel as f64;
 
-            let ir = (255.99 * pixel_color.x() * scale) as i64;
-            let ig = (255.99 * pixel_color.y() * scale) as i64;
-            let ib = (255.99 * pixel_color.z() * scale) as i64;
-            print!("{} {} {}\n", ir, ig, ib);
+            let scale = 1.0 / samples_per_pixel as f64;
+            pixel_color = pixel_color.scale(scale);
+
+            let r = (256.0 * clamp(pixel_color.x(), 0.0, 0.999)) as i64;
+            let g = (256.0 * clamp(pixel_color.y(), 0.0, 0.999)) as i64;
+            let b = (256.0 * clamp(pixel_color.z(), 0.0, 0.999)) as i64;
+            print!("{} {} {}\n", r, g, b);
         }
     }
 

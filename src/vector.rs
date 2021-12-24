@@ -55,6 +55,10 @@ impl Vector {
     pub fn unit(self) -> Vector {
         self / self.length()
     }
+
+    pub fn scale(self, s: f64) -> Vector {
+        Vector::new(self.x * s, self.y * s, self.z * s)
+    }
 }
 
 impl ops::Add<Vector> for Vector {
