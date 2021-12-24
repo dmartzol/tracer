@@ -9,6 +9,7 @@ use hitable::{Hitable, HitableList};
 use rand::Rng; // 0.8.0
 use ray::Ray;
 use sphere::Sphere;
+use std::time::Instant;
 use vector::Vector;
 
 fn random_float() -> f64 {
@@ -26,6 +27,7 @@ fn color(r: &Ray, world: &HitableList) -> Vector {
 }
 
 fn main() {
+    let now = Instant::now();
     // Image
     let aspect_ratio = 16.0 / 9.0;
     let image_width: u16 = 400;
@@ -60,4 +62,7 @@ fn main() {
             print!("{} {} {}\n", ir, ig, ib);
         }
     }
+
+    let elapsed = now.elapsed();
+    // println!("Elapsed: {:.2?}", elapsed);
 }
