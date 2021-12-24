@@ -36,6 +36,14 @@ impl Vector {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 
+    pub fn cross(self, v: Vector) -> Vector {
+        Vector::new(
+            self.y() * v.z() - self.z() * v.y(),
+            self.z() * v.x() - self.x() * v.z(),
+            self.x() * v.y() - self.y() * v.x(),
+        )
+    }
+
     pub fn squared_length(self) -> f64 {
         self.x().powf(2.0) + self.y().powf(2.0) + self.z().powf(2.0)
     }

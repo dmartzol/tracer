@@ -1,8 +1,10 @@
+mod camera;
 mod hitable;
 mod ray;
 mod sphere;
 mod vector;
 
+use camera::Camera;
 use hitable::{Hitable, HitableList};
 use rand::Rng; // 0.8.0
 use ray::Ray;
@@ -24,10 +26,14 @@ fn color(r: &Ray, world: &HitableList) -> Vector {
 }
 
 fn main() {
-    // Image dimensions
+    // Image
     let aspect_ratio = 16.0 / 9.0;
     let image_width: u16 = 400;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
+    let samples_per_pixel = 100;
+
+    // Camera
+    let camera = Camera::new();
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
@@ -36,6 +42,7 @@ fn main() {
     let vertical = Vector::new(0.0, 2.0, 0.0);
     let origin = Vector::new(0.0, 0.0, 0.0);
 
+    // Scene
     let world: HitableList = HitableList::new(vec![
         Box::new(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
         Box::new(Sphere::new(Vector::new(0.0, -100.5, -1.0), 100.0)),
@@ -43,13 +50,18 @@ fn main() {
 
     for j in (0..image_height).rev() {
         for i in 0..image_width {
-            let u = (i as f64) / (image_width as f64);
-            let v = (j as f64) / (image_height as f64);
-            let r = Ray::new(origin, lower_left_corner + u * horizontal + v * vertical);
-            let col = color(&r, &world);
-            let ir = (255.99 * col.x()) as i64;
-            let ig = (255.99 * col.y()) as i64;
-            let ib = (255.99 * col.z()) as i64;
+            let mut pixel_color = Vector::new(0.0, 0.0, 0.0);
+            for s in 0..samples_per_pixel {
+                let u = (i as f64 + random_float()) / (image_width - 1) as f64;
+                let v = (j as f64 + random_float()) / (image_height - 1) as f64;
+                let ray = camera.get_ray(u, v);
+                pixel_color = pixel_color + color(&ray, &world);
+            }
+            let scale = 1.0 / samples_per_pixel as f64;
+
+            let ir = (255.99 * pixel_color.x() * scale) as i64;
+            let ig = (255.99 * pixel_color.y() * scale) as i64;
+            let ib = (255.99 * pixel_color.z() * scale) as i64;
             print!("{} {} {}\n", ir, ig, ib);
         }
     }
