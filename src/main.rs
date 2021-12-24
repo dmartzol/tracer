@@ -37,11 +37,6 @@ fn main() {
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
-    let lower_left_corner = Vector::new(-2.0, -1.0, -1.0);
-    let horizontal = Vector::new(4.0, 0.0, 0.0);
-    let vertical = Vector::new(0.0, 2.0, 0.0);
-    let origin = Vector::new(0.0, 0.0, 0.0);
-
     // Scene
     let world: HitableList = HitableList::new(vec![
         Box::new(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
