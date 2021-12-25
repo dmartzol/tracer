@@ -27,6 +27,19 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     }
 }
 
+fn write_color(mut color: Vector, samples_per_pixel: i64) {
+    // Divide the color by the number of samples
+    let scale = 1.0 / samples_per_pixel as f64;
+    color = color.scale(scale);
+
+    // Gamma-correct for gamma=2.0.
+    let r = (256.0 * clamp(color.x().sqrt(), 0.0, 0.999)) as i64;
+    let g = (256.0 * clamp(color.y().sqrt(), 0.0, 0.999)) as i64;
+    let b = (256.0 * clamp(color.z().sqrt(), 0.0, 0.999)) as i64;
+
+    print!("{} {} {}\n", r, g, b);
+}
+
 fn main() {
     let now = Instant::now();
 
@@ -57,13 +70,7 @@ fn main() {
                 pixel_color = pixel_color + color(&ray, &scene, max_depth);
             }
 
-            let scale = 1.0 / samples_per_pixel as f64;
-            pixel_color = pixel_color.scale(scale);
-
-            let r = (256.0 * clamp(pixel_color.x(), 0.0, 0.999)) as i64;
-            let g = (256.0 * clamp(pixel_color.y(), 0.0, 0.999)) as i64;
-            let b = (256.0 * clamp(pixel_color.z(), 0.0, 0.999)) as i64;
-            print!("{} {} {}\n", r, g, b);
+            write_color(pixel_color, samples_per_pixel);
         }
     }
 
