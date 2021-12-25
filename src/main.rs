@@ -11,11 +11,16 @@ use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
 use tracer::{clamp, random_float};
-use vector::Vector;
+use vector::{random_in_unit_sphere, Vector};
 
-fn color(r: &Ray, world: &HitableList) -> Vector {
-    if let Some(hit) = world.hit(r, 0.0, f64::MAX) {
-        return 0.5 * (hit.normal() + Vector::new(1.0, 1.0, 1.0));
+fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
+    if depth <= 0 {
+        return Vector::new(0.0, 0.0, 0.0);
+    }
+
+    if let Some(hit) = scene.hit(r, 0.0, f64::MAX) {
+        let target = hit.normal() + hit.p() + random_in_unit_sphere();
+        return color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
     } else {
         let t = 0.5 * (r.direction().unit().y() + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
@@ -30,6 +35,7 @@ fn main() {
     let image_width: u16 = 400;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
     let samples_per_pixel = 100;
+    let max_depth = 3;
 
     // Camera
     let camera = Camera::new();
@@ -48,7 +54,7 @@ fn main() {
                 let u = (i as f64 + random_float()) / (image_width - 1) as f64;
                 let v = (j as f64 + random_float()) / (image_height - 1) as f64;
                 let ray = camera.get_ray(u, v);
-                pixel_color = pixel_color + color(&ray, &scene);
+                pixel_color = pixel_color + color(&ray, &scene, max_depth);
             }
 
             let scale = 1.0 / samples_per_pixel as f64;

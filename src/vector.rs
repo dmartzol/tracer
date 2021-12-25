@@ -1,3 +1,4 @@
+use crate::tracer::{random_float, random_float_between};
 use std::ops;
 
 #[derive(Copy, Clone)]
@@ -58,6 +59,28 @@ impl Vector {
 
     pub fn scale(self, s: f64) -> Vector {
         Vector::new(self.x * s, self.y * s, self.z * s)
+    }
+
+    pub fn random() -> Vector {
+        Vector::new(random_float(), random_float(), random_float())
+    }
+
+    pub fn random_between(min: f64, max: f64) -> Vector {
+        Vector::new(
+            random_float_between(min, max),
+            random_float_between(min, max),
+            random_float_between(min, max),
+        )
+    }
+}
+
+pub fn random_in_unit_sphere() -> Vector {
+    loop {
+        let p = Vector::random_between(-1.0, 1.0);
+        if p.squared_length() >= 1.0 {
+            continue;
+        }
+        return p;
     }
 }
 
