@@ -30,6 +30,7 @@ fn color(r: &Ray, world: &HitableList) -> Vector {
 
 fn main() {
     let now = Instant::now();
+
     // Image
     let aspect_ratio = 16.0 / 9.0;
     let image_width: u16 = 400;
@@ -41,8 +42,7 @@ fn main() {
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
-    // Scene
-    let world: HitableList = HitableList::new(vec![
+    let scene: HitableList = HitableList::new(vec![
         Box::new(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
         Box::new(Sphere::new(Vector::new(0.0, -100.5, -1.0), 100.0)),
     ]);
@@ -54,7 +54,7 @@ fn main() {
                 let u = (i as f64 + random_float()) / (image_width - 1) as f64;
                 let v = (j as f64 + random_float()) / (image_height - 1) as f64;
                 let ray = camera.get_ray(u, v);
-                pixel_color = pixel_color + color(&ray, &world);
+                pixel_color = pixel_color + color(&ray, &scene);
             }
 
             let scale = 1.0 / samples_per_pixel as f64;
