@@ -18,7 +18,7 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
         return Vector::new(0.0, 0.0, 0.0);
     }
 
-    if let Some(hit) = scene.hit(r, 0.0, f64::MAX) {
+    if let Some(hit) = scene.hit(r, 0.001, f64::MAX) {
         let target = hit.normal() + hit.p() + random_in_unit_sphere();
         return 0.5 * color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
     } else {
