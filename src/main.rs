@@ -20,7 +20,7 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
 
     if let Some(hit) = scene.hit(r, 0.0, f64::MAX) {
         let target = hit.normal() + hit.p() + random_in_unit_sphere();
-        return color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
+        return 0.5 * color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
     } else {
         let t = 0.5 * (r.direction().unit().y() + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
@@ -35,7 +35,7 @@ fn main() {
     let image_width: u16 = 400;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
     let samples_per_pixel = 100;
-    let max_depth = 3;
+    let max_depth = 50;
 
     // Camera
     let camera = Camera::new();
