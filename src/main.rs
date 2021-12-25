@@ -11,7 +11,7 @@ use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
 use tracer::{clamp, random_float};
-use vector::{random_in_unit_sphere, Vector};
+use vector::{random_unit_vector, Vector};
 
 fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     if depth <= 0 {
@@ -19,7 +19,7 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     }
 
     if let Some(hit) = scene.hit(r, 0.001, f64::MAX) {
-        let target = hit.normal() + hit.p() + random_in_unit_sphere();
+        let target = hit.normal() + hit.p() + random_unit_vector();
         return 0.5 * color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
     } else {
         let t = 0.5 * (r.direction().unit().y() + 1.0);

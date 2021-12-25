@@ -74,7 +74,11 @@ impl Vector {
     }
 }
 
-pub fn random_in_unit_sphere() -> Vector {
+pub fn random_unit_vector() -> Vector {
+    random_in_unit_sphere().unit()
+}
+
+fn random_in_unit_sphere() -> Vector {
     loop {
         let p = Vector::random_between(-1.0, 1.0);
         if p.squared_length() >= 1.0 {
