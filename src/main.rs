@@ -7,17 +7,11 @@ mod vector;
 
 use camera::Camera;
 use hitable::{Hitable, HitableList};
-use rand::Rng; // 0.8.0
 use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
-use tracer::clamp;
+use tracer::{clamp, random_float};
 use vector::Vector;
-
-fn random_float() -> f64 {
-    let mut rng = rand::thread_rng();
-    return rng.gen_range(0.0..1.0);
-}
 
 fn color(r: &Ray, world: &HitableList) -> Vector {
     if let Some(hit) = world.hit(r, 0.0, f64::MAX) {
