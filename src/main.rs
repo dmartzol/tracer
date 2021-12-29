@@ -1,5 +1,6 @@
 mod camera;
 mod hitable;
+mod material;
 mod ray;
 mod sphere;
 mod tracer;
