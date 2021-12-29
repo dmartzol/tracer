@@ -6,7 +6,7 @@ pub trait Material {
     fn scatter(self, hit: &HitRecord) -> Option<(Ray, Vector)>;
 }
 
-struct Lambertian {
+pub struct Lambertian {
     albedo: Vector,
 }
 
@@ -18,8 +18,8 @@ impl Lambertian {
 
 impl Material for Lambertian {
     fn scatter(self, hit: &HitRecord) -> Option<(Ray, Vector)> {
-        let scatter_direction = hit.normal() + random_unit_vector();
-        let scattered = Ray::new(hit.p(), scatter_direction);
+        let scatter_direction = hit.normal + random_unit_vector();
+        let scattered = Ray::new(hit.p, scatter_direction);
         Some((scattered, self.albedo))
     }
 }

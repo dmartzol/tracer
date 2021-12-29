@@ -3,30 +3,29 @@ use crate::ray::Ray;
 use crate::vector::Vector;
 
 #[derive(Copy, Clone)]
-pub struct HitRecord {
-    t: f64,
-    p: Vector,
-    normal: Vector,
-    front_face: bool,
+pub struct HitRecord<'a> {
+    pub t: f64,
+    pub p: Vector,
+    pub normal: Vector,
+    pub front_face: bool,
+    pub material: &'a dyn Material,
 }
 
-impl HitRecord {
-    pub fn new(t: f64, p: Vector, normal: Vector, front_face: bool) -> HitRecord {
+impl HitRecord<'_> {
+    pub fn new(
+        t: f64,
+        p: Vector,
+        normal: Vector,
+        front_face: bool,
+        material: &dyn Material,
+    ) -> HitRecord {
         HitRecord {
             t,
             p,
             normal,
             front_face,
+            material,
         }
-    }
-    pub fn t(self) -> f64 {
-        self.t
-    }
-    pub fn p(self) -> Vector {
-        self.p
-    }
-    pub fn normal(self) -> Vector {
-        self.normal
     }
     pub fn set_face_normal(mut self, r: &Ray, outward_normal: Vector) {
         if r.direction().dot(outward_normal) > 0.0 {

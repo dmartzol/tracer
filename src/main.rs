@@ -8,6 +8,7 @@ mod vector;
 
 use camera::Camera;
 use hitable::{Hitable, HitableList};
+use material::Lambertian;
 use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
@@ -20,8 +21,8 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     }
 
     if let Some(hit) = scene.hit(r, 0.001, f64::MAX) {
-        let target = hit.normal() + hit.p() + random_unit_vector();
-        return 0.5 * color(&Ray::new(hit.p(), target - hit.p()), scene, depth - 1);
+        let target = hit.normal + hit.p + random_unit_vector();
+        return 0.5 * color(&Ray::new(hit.p, target - hit.p), scene, depth - 1);
     } else {
         let t = 0.5 * (r.direction().unit().y() + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
@@ -57,8 +58,16 @@ fn main() {
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
     let scene: HitableList = HitableList::new(vec![
-        Box::new(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5)),
-        Box::new(Sphere::new(Vector::new(0.0, -100.5, -1.0), 100.0)),
+        Box::new(Sphere::new(
+            Vector::new(0.0, 0.0, -1.0),
+            0.5,
+            Lambertian::new(Vector::new(0.8, 0.3, 0.3)),
+        )),
+        Box::new(Sphere::new(
+            Vector::new(0.0, -100.5, -1.0),
+            100.0,
+            Lambertian::new(Vector::new(0.8, 0.8, 0.0)),
+        )),
     ]);
 
     for j in (0..image_height).rev() {
@@ -75,6 +84,6 @@ fn main() {
         }
     }
 
-    let elapsed = now.elapsed();
+    let _elapsed = now.elapsed();
     // println!("Elapsed: {:.2?}", elapsed);
 }
