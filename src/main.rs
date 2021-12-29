@@ -73,7 +73,7 @@ fn main() {
     for j in (0..image_height).rev() {
         for i in 0..image_width {
             let mut pixel_color = Vector::new(0.0, 0.0, 0.0);
-            for s in 0..samples_per_pixel {
+            for _ in 0..samples_per_pixel {
                 let u = (i as f64 + random_float()) / (image_width - 1) as f64;
                 let v = (j as f64 + random_float()) / (image_height - 1) as f64;
                 let ray = camera.get_ray(u, v);
