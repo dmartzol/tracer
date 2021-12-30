@@ -72,6 +72,10 @@ impl Vector {
             random_float_between(min, max),
         )
     }
+    pub fn is_near_zero(self) -> bool {
+        let s = 1e-8;
+        return (self.x.abs() < s) && (self.y.abs() < s) && (self.z.abs() < s);
+    }
 }
 
 pub fn random_unit_vector() -> Vector {
