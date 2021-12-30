@@ -84,7 +84,7 @@ fn my_scene() -> HitableList {
 fn main() {
     // Image
     let aspect_ratio = 16.0 / 9.0;
-    let image_width: u16 = 1600;
+    let image_width: u16 = 400;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
     let samples_per_pixel = 100;
     let max_depth = 50;
