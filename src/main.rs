@@ -8,7 +8,7 @@ mod vector;
 
 use camera::Camera;
 use hitable::{Hitable, HitableList};
-use material::Lambertian;
+use material::{Lambertian, Metal};
 use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
@@ -46,17 +46,38 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
 }
 
 fn my_scene() -> HitableList {
+    let color01 = Vector::new(0.8, 0.8, 0.0);
+    let color02 = Vector::new(0.7, 0.3, 0.3);
+    let color03 = Vector::new(0.8, 0.8, 0.8);
+    let color04 = Vector::new(0.8, 0.6, 0.2);
+
+    let material_ground = Lambertian::new(color01);
+    let material_center = Lambertian::new(color02);
+    let material_left = Metal::new(color03);
+    let material_right = Metal::new(color04);
+
     let mut scene = HitableList::default();
-    scene.push(Sphere::new(
-        Vector::new(0.0, 0.0, -1.0),
-        0.5,
-        Lambertian::new(Vector::new(0.8, 0.3, 0.3)),
-    ));
     scene.push(Sphere::new(
         Vector::new(0.0, -100.5, -1.0),
         100.0,
-        Lambertian::new(Vector::new(0.8, 0.8, 0.0)),
+        material_ground,
     ));
+    scene.push(Sphere::new(
+        Vector::new(0.0, 0.0, -1.0),
+        0.5,
+        material_center,
+    ));
+    scene.push(Sphere::new(
+        Vector::new(-1.0, 0.0, -1.0),
+        0.5,
+        material_left,
+    ));
+    scene.push(Sphere::new(
+        Vector::new(1.0, 0.0, -1.0),
+        0.5,
+        material_right,
+    ));
+
     return scene;
 }
 
