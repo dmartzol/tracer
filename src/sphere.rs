@@ -18,9 +18,6 @@ impl<M: Material> Sphere<M> {
             material,
         }
     }
-    pub fn radius(&self) -> f64 {
-        self.radius
-    }
     pub fn normal_at(&self, p: Vector) -> Vector {
         (p - self.center).unit()
     }
