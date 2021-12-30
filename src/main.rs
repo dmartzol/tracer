@@ -13,7 +13,7 @@ use ray::Ray;
 use sphere::Sphere;
 use std::time::Instant;
 use tracer::{clamp, random_float};
-use vector::{random_unit_vector, Vector};
+use vector::Vector;
 
 fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     if depth <= 0 {
@@ -21,8 +21,11 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
     }
 
     if let Some(hit) = scene.hit(r, 0.001, f64::MAX) {
-        let target = hit.normal + hit.p + random_unit_vector();
-        return 0.5 * color(&Ray::new(hit.p, target - hit.p), scene, depth - 1);
+        if let Some((scattered, attenuation)) = hit.material.scatter(r, &hit) {
+            return attenuation.hadamard_product(color(&scattered, scene, depth - 1));
+        } else {
+            return Vector::new(0.0, 0.0, 0.0);
+        }
     } else {
         let t = 0.5 * (r.direction().unit().y + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);

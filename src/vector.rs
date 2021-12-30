@@ -49,6 +49,10 @@ impl Vector {
         Vector::new(self.x * s, self.y * s, self.z * s)
     }
 
+    pub fn hadamard_product(self, v: Vector) -> Vector {
+        Vector::new(self.x * v.x, self.y * v.y, self.z * v.z)
+    }
+
     pub fn random() -> Vector {
         Vector::new(random_float(), random_float(), random_float())
     }
