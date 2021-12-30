@@ -3,9 +3,9 @@ use std::ops;
 
 #[derive(Copy, Clone)]
 pub struct Vector {
-    x: f64,
-    y: f64,
-    z: f64,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl Vector {
@@ -13,23 +13,11 @@ impl Vector {
         Vector { x, y, z }
     }
 
-    pub fn x(self) -> f64 {
-        self.x
-    }
-
-    pub fn y(self) -> f64 {
-        self.y
-    }
-
-    pub fn z(self) -> f64 {
-        self.z
-    }
-
     pub fn add(self, other: Vector) -> Vector {
         return Vector {
-            x: self.x() + other.x(),
-            y: self.y() + other.y(),
-            z: self.z() + other.z(),
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
         };
     }
 
@@ -39,14 +27,14 @@ impl Vector {
 
     pub fn cross(self, v: Vector) -> Vector {
         Vector::new(
-            self.y() * v.z() - self.z() * v.y(),
-            self.z() * v.x() - self.x() * v.z(),
-            self.x() * v.y() - self.y() * v.x(),
+            self.y * v.z - self.z * v.y,
+            self.z * v.x - self.x * v.z,
+            self.x * v.y - self.y * v.x,
         )
     }
 
     pub fn squared_length(self) -> f64 {
-        self.x().powf(2.0) + self.y().powf(2.0) + self.z().powf(2.0)
+        self.x.powf(2.0) + self.y.powf(2.0) + self.z.powf(2.0)
     }
 
     pub fn length(self) -> f64 {

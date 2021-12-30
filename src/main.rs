@@ -24,7 +24,7 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
         let target = hit.normal + hit.p + random_unit_vector();
         return 0.5 * color(&Ray::new(hit.p, target - hit.p), scene, depth - 1);
     } else {
-        let t = 0.5 * (r.direction().unit().y() + 1.0);
+        let t = 0.5 * (r.direction().unit().y + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
     }
 }
@@ -35,9 +35,9 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
     color = color.scale(scale);
 
     // Gamma-correct for gamma=2.0.
-    let r = (256.0 * clamp(color.x().sqrt(), 0.0, 0.999)) as i64;
-    let g = (256.0 * clamp(color.y().sqrt(), 0.0, 0.999)) as i64;
-    let b = (256.0 * clamp(color.z().sqrt(), 0.0, 0.999)) as i64;
+    let r = (256.0 * clamp(color.x.sqrt(), 0.0, 0.999)) as i64;
+    let g = (256.0 * clamp(color.y.sqrt(), 0.0, 0.999)) as i64;
+    let b = (256.0 * clamp(color.z.sqrt(), 0.0, 0.999)) as i64;
 
     print!("{} {} {}\n", r, g, b);
 }
