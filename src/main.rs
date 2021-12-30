@@ -42,21 +42,7 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
     print!("{} {} {}\n", r, g, b);
 }
 
-fn main() {
-    let now = Instant::now();
-
-    // Image
-    let aspect_ratio = 16.0 / 9.0;
-    let image_width: u16 = 400;
-    let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
-    let samples_per_pixel = 100;
-    let max_depth = 50;
-
-    // Camera
-    let camera = Camera::new();
-
-    print!("P3\n{} {}\n255\n", image_width, image_height);
-
+fn my_scene() -> HitableList {
     let mut scene = HitableList::default();
     scene.push(Sphere::new(
         Vector::new(0.0, 0.0, -1.0),
@@ -68,6 +54,24 @@ fn main() {
         100.0,
         Lambertian::new(Vector::new(0.8, 0.8, 0.0)),
     ));
+    return scene;
+}
+
+fn main() {
+    let now = Instant::now();
+
+    // Image
+    let aspect_ratio = 16.0 / 9.0;
+    let image_width: u16 = 400;
+    let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
+    let samples_per_pixel = 100;
+    let max_depth = 50;
+
+    let camera = Camera::new();
+
+    let scene = my_scene();
+
+    print!("P3\n{} {}\n255\n", image_width, image_height);
 
     for j in (0..image_height).rev() {
         for i in 0..image_width {
