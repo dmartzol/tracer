@@ -8,10 +8,10 @@ mod vector;
 
 use camera::Camera;
 use hitable::{Hitable, HitableList};
+use indicatif::{ProgressBar, ProgressStyle};
 use material::{Lambertian, Metal};
 use ray::Ray;
 use sphere::Sphere;
-use std::time::Instant;
 use tracer::{clamp, random_float};
 use vector::Vector;
 
@@ -82,11 +82,9 @@ fn my_scene() -> HitableList {
 }
 
 fn main() {
-    let now = Instant::now();
-
     // Image
     let aspect_ratio = 16.0 / 9.0;
-    let image_width: u16 = 400;
+    let image_width: u16 = 1600;
     let image_height: u16 = (image_width as f64 / aspect_ratio) as u16;
     let samples_per_pixel = 100;
     let max_depth = 50;
@@ -97,7 +95,14 @@ fn main() {
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
+    let progress_bar = ProgressBar::new(image_height as u64);
+    let style = ProgressStyle::default_bar()
+        .template("[{elapsed_precise}] {bar:100.cyan/blue} {pos:>7}/{len:7} {msg}")
+        .progress_chars("#>-");
+    progress_bar.set_style(style);
+
     for j in (0..image_height).rev() {
+        progress_bar.inc(1);
         for i in 0..image_width {
             let mut pixel_color = Vector::new(0.0, 0.0, 0.0);
             for _ in 0..samples_per_pixel {
@@ -106,11 +111,9 @@ fn main() {
                 let ray = camera.get_ray(u, v);
                 pixel_color = pixel_color + color(&ray, &scene, max_depth);
             }
-
             write_color(pixel_color, samples_per_pixel);
         }
     }
 
-    let _elapsed = now.elapsed();
-    // println!("Elapsed: {:.2?}", elapsed);
+    progress_bar.finish_with_message("done");
 }
