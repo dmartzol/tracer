@@ -1,5 +1,4 @@
 use crate::hitable::{HitRecord, Hitable};
-// use crate::material::Material;
 use crate::material::Material;
 use crate::ray::Ray;
 use crate::vector::Vector;

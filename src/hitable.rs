@@ -44,16 +44,14 @@ pub trait Hitable {
     fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
 }
 
+#[derive(Default)]
 pub struct HitableList {
     list: Vec<Box<dyn Hitable>>,
 }
 
 impl HitableList {
-    pub fn new(list: Vec<Box<dyn Hitable>>) -> HitableList {
-        HitableList { list }
-    }
-    pub fn push(mut self, v: Box<dyn Hitable>) {
-        self.list.push(v);
+    pub fn push(&mut self, v: impl Hitable + 'static) {
+        self.list.push(Box::new(v));
     }
 }
 

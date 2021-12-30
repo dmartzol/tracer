@@ -57,18 +57,17 @@ fn main() {
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
-    let scene: HitableList = HitableList::new(vec![
-        Box::new(Sphere::new(
-            Vector::new(0.0, 0.0, -1.0),
-            0.5,
-            Lambertian::new(Vector::new(0.8, 0.3, 0.3)),
-        )),
-        Box::new(Sphere::new(
-            Vector::new(0.0, -100.5, -1.0),
-            100.0,
-            Lambertian::new(Vector::new(0.8, 0.8, 0.0)),
-        )),
-    ]);
+    let mut scene = HitableList::default();
+    scene.push(Sphere::new(
+        Vector::new(0.0, 0.0, -1.0),
+        0.5,
+        Lambertian::new(Vector::new(0.8, 0.3, 0.3)),
+    ));
+    scene.push(Sphere::new(
+        Vector::new(0.0, -100.5, -1.0),
+        100.0,
+        Lambertian::new(Vector::new(0.8, 0.8, 0.0)),
+    ));
 
     for j in (0..image_height).rev() {
         for i in 0..image_width {
