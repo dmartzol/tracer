@@ -53,8 +53,8 @@ fn my_scene() -> HitableList {
 
     let material_ground = Lambertian::new(color01);
     let material_center = Lambertian::new(color02);
-    let material_left = Metal::new(color03);
-    let material_right = Metal::new(color04);
+    let material_left = Metal::new(color03, 0.3);
+    let material_right = Metal::new(color04, 1.0);
 
     let mut scene = HitableList::default();
     scene.push(Sphere::new(
