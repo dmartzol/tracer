@@ -9,7 +9,7 @@ mod vector;
 use camera::Camera;
 use hitable::{Hitable, HitableList};
 use indicatif::{ProgressBar, ProgressStyle};
-use material::{Lambertian, Metal};
+use material::{Dielectric, Lambertian, Metal};
 use ray::Ray;
 use sphere::Sphere;
 use tracer::{clamp, random_float};
@@ -27,7 +27,7 @@ fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
             return Vector::new(0.0, 0.0, 0.0);
         }
     } else {
-        let t = 0.5 * (r.direction().unit().y + 1.0);
+        let t = 0.5 * (r.direction.unit().y + 1.0);
         return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
     }
 }
@@ -46,37 +46,32 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
 }
 
 fn my_scene() -> HitableList {
-    let color01 = Vector::new(0.8, 0.8, 0.0);
-    let color02 = Vector::new(0.7, 0.3, 0.3);
-    let color03 = Vector::new(0.8, 0.8, 0.8);
-    let color04 = Vector::new(0.8, 0.6, 0.2);
+    let green = Vector::new(0.8, 0.8, 0.0);
+    let red = Vector::new(0.7, 0.3, 0.3);
+    let grey = Vector::new(0.8, 0.8, 0.8);
+    let gold = Vector::new(0.8, 0.6, 0.2);
+    let blue = Vector::new(0.1, 0.2, 0.5);
 
-    let material_ground = Lambertian::new(color01);
-    let material_center = Lambertian::new(color02);
-    let material_left = Metal::new(color03, 0.3);
-    let material_right = Metal::new(color04, 1.0);
+    let material_green = Lambertian::new(green);
+    let _material_red = Lambertian::new(red);
+    let material_blue = Lambertian::new(blue);
+    let _material_silver = Metal::new(grey, 0.3);
+    let material_gold = Metal::new(gold, 1.0);
+    let material_glass = Dielectric::new(1.5);
 
     let mut scene = HitableList::default();
     scene.push(Sphere::new(
         Vector::new(0.0, -100.5, -1.0),
         100.0,
-        material_ground,
+        material_green,
     ));
-    scene.push(Sphere::new(
-        Vector::new(0.0, 0.0, -1.0),
-        0.5,
-        material_center,
-    ));
+    scene.push(Sphere::new(Vector::new(0.0, 0.0, -1.0), 0.5, material_blue));
     scene.push(Sphere::new(
         Vector::new(-1.0, 0.0, -1.0),
         0.5,
-        material_left,
+        material_glass,
     ));
-    scene.push(Sphere::new(
-        Vector::new(1.0, 0.0, -1.0),
-        0.5,
-        material_right,
-    ));
+    scene.push(Sphere::new(Vector::new(1.0, 0.0, -1.0), 0.5, material_gold));
 
     return scene;
 }

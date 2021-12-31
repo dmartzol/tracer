@@ -41,12 +41,20 @@ impl Vector {
         self.squared_length().sqrt()
     }
 
+    pub fn magnitude(self) -> f64 {
+        self.length()
+    }
+
     pub fn unit(self) -> Vector {
         self / self.length()
     }
 
     pub fn scale(self, s: f64) -> Vector {
         Vector::new(self.x * s, self.y * s, self.z * s)
+    }
+
+    pub fn reverse(self) -> Vector {
+        self.scale(-1.0)
     }
 
     pub fn hadamard_product(self, v: Vector) -> Vector {
@@ -72,6 +80,18 @@ impl Vector {
 
     pub fn reflect(self, normal: Vector) -> Self {
         self - 2.0 * self.dot(normal) * normal
+    }
+
+    pub fn refract(self, n: Vector, ni_over_nt: f64) -> Option<Vector> {
+        let uv = self.unit();
+        let dt = uv.dot(n);
+        let discriminant = 1.0 - ni_over_nt.powi(2) * (1.0 - dt.powi(2));
+        if discriminant > 0.0 {
+            let refracted = ni_over_nt * (uv - dt * n) - discriminant.sqrt() * n;
+            Some(refracted)
+        } else {
+            None
+        }
     }
 }
 

@@ -7,35 +7,16 @@ pub struct HitRecord<'a> {
     pub t: f64,
     pub p: Vector,
     pub normal: Vector,
-    pub front_face: bool,
     pub material: &'a dyn Material,
 }
 
 impl HitRecord<'_> {
-    pub fn new(
-        t: f64,
-        p: Vector,
-        normal: Vector,
-        front_face: bool,
-        material: &dyn Material,
-    ) -> HitRecord {
+    pub fn new(t: f64, p: Vector, normal: Vector, material: &dyn Material) -> HitRecord {
         HitRecord {
             t,
             p,
             normal,
-            front_face,
             material,
-        }
-    }
-    pub fn set_face_normal(mut self, r: &Ray, outward_normal: Vector) {
-        if r.direction().dot(outward_normal) > 0.0 {
-            // ray is inside the object
-            self.normal = -1.0 * outward_normal;
-            self.front_face = false;
-        } else {
-            // ray is outside the object
-            self.normal = outward_normal;
-            self.front_face = true;
         }
     }
 }

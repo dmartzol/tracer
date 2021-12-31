@@ -17,36 +17,30 @@ impl<M: Material> Sphere<M> {
             material,
         }
     }
-    pub fn normal_at(&self, p: Vector) -> Vector {
-        (p - self.center).unit()
-    }
 }
 
 impl<M: Material> Hitable for Sphere<M> {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
-        let oc = r.origin() - self.center;
-        let a = r.direction().dot(r.direction());
-        let b = oc.dot(r.direction());
-        let c = oc.dot(oc) - self.radius.powf(2.0);
-        let discriminant = b.powf(2.0) - a * c;
+    fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
+        let oc = ray.origin - self.center;
+        let a = ray.direction.dot(ray.direction);
+        let b = oc.dot(ray.direction);
+        let c = oc.dot(oc) - self.radius.powi(2);
+        let discriminant = b.powi(2) - a * c;
         if discriminant > 0.0 {
-            let root = (-b - discriminant.sqrt()) / a;
-            if root < t_max && root > t_min {
-                let p = r.at(root);
-                let outward_normal = self.normal_at(p);
-                let record = HitRecord::new(root, p, outward_normal, false, &self.material);
-                record.set_face_normal(r, outward_normal);
-                return Some(record);
+            let sqrt_discriminant = discriminant.sqrt();
+            let t = (-b - sqrt_discriminant) / a;
+            if t < t_max && t > t_min {
+                let p = ray.at(t);
+                let normal = (p - self.center) / self.radius;
+                return Some(HitRecord::new(t, p, normal, &self.material));
             }
-            let root = (-b + discriminant.sqrt()) / a;
-            if root < t_max && root > t_min {
-                let p = r.at(root);
-                let outward_normal = self.normal_at(p);
-                let record = HitRecord::new(root, p, outward_normal, false, &self.material);
-                record.set_face_normal(r, outward_normal);
-                return Some(record);
+            let t = (-b + sqrt_discriminant) / a;
+            if t < t_max && t > t_min {
+                let p = ray.at(t);
+                let normal = (p - self.center) / self.radius;
+                return Some(HitRecord::new(t, p, normal, &self.material));
             }
         }
-        return None;
+        None
     }
 }
