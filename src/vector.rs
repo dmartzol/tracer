@@ -113,6 +113,20 @@ pub fn random_in_unit_sphere() -> Vector {
     }
 }
 
+pub fn random_in_unit_disk() -> Vector {
+    loop {
+        let p = Vector::new(
+            random_float_between(-1.0, 1.0),
+            random_float_between(-1.0, 1.0),
+            0.0,
+        );
+        if p.squared_length() >= 1.0 {
+            continue;
+        }
+        return p;
+    }
+}
+
 impl ops::Add<Vector> for Vector {
     type Output = Vector;
     fn add(self, v: Vector) -> Vector {

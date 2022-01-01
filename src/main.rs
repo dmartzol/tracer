@@ -86,12 +86,21 @@ fn main() {
     let samples_per_pixel = 100;
     let max_depth = 50;
 
+    // Camera
+    let lookfrom = Vector::new(-2.0, 2.0, 1.0);
+    let lookat = Vector::new(0.0, 0.0, -1.0);
+    let vup = Vector::new(0.0, 1.0, 0.0);
+    let aperture = 2.0;
+    let dist_to_focus = (lookfrom - lookat).length();
+
     let camera = Camera::new(
-        Vector::new(-2.0, 2.0, 1.0),
-        Vector::new(0.0, 0.0, -1.0),
-        Vector::new(0.0, 1.0, 0.0),
+        lookfrom,
+        lookat,
+        vup,
         20.0,
         aspect_ratio,
+        aperture,
+        dist_to_focus,
     );
 
     let scene = my_scene();
