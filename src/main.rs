@@ -7,30 +7,12 @@ mod tracer;
 mod vector;
 
 use camera::Camera;
-use hitable::{Hitable, HitableList};
+use hitable::HitableList;
 use indicatif::{ProgressBar, ProgressStyle};
 use material::{Dielectric, Lambertian, Metal};
-use ray::Ray;
 use sphere::Sphere;
 use tracer::{clamp, random_float};
 use vector::Vector;
-
-fn color(r: &Ray, scene: &HitableList, depth: i64) -> Vector {
-    if depth <= 0 {
-        return Vector::new(0.0, 0.0, 0.0);
-    }
-
-    if let Some(hit) = scene.hit(r, 0.001, f64::MAX) {
-        if let Some((scattered, attenuation)) = hit.material.scatter(r, &hit) {
-            return attenuation.hadamard_product(color(&scattered, scene, depth - 1));
-        } else {
-            return Vector::new(0.0, 0.0, 0.0);
-        }
-    } else {
-        let t = 0.5 * (r.direction.unit().y + 1.0);
-        return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
-    }
-}
 
 fn write_color(mut color: Vector, samples_per_pixel: i64) {
     // Divide the color by the number of samples
@@ -92,7 +74,6 @@ fn main() {
     let vup = Vector::new(0.0, 1.0, 0.0);
     let aperture = 2.0;
     let dist_to_focus = (lookfrom - lookat).length();
-
     let camera = Camera::new(
         lookfrom,
         lookat,
@@ -121,7 +102,7 @@ fn main() {
                 let u = (i as f64 + random_float()) / (image_width - 1) as f64;
                 let v = (j as f64 + random_float()) / (image_height - 1) as f64;
                 let ray = camera.get_ray(u, v);
-                pixel_color = pixel_color + color(&ray, &scene, max_depth);
+                pixel_color = pixel_color + ray.color(&scene, max_depth);
             }
             write_color(pixel_color, samples_per_pixel);
         }
