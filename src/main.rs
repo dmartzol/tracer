@@ -86,7 +86,13 @@ fn main() {
     let samples_per_pixel = 100;
     let max_depth = 50;
 
-    let camera = Camera::new();
+    let camera = Camera::new(
+        Vector::new(-2.0, 2.0, 1.0),
+        Vector::new(0.0, 0.0, -1.0),
+        Vector::new(0.0, 1.0, 0.0),
+        20.0,
+        aspect_ratio,
+    );
 
     let scene = my_scene();
 

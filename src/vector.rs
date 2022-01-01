@@ -99,6 +99,10 @@ pub fn random_unit_vector() -> Vector {
     random_in_unit_sphere().unit()
 }
 
+pub fn degrees_to_radians(degrees: f64) -> f64 {
+    degrees * 3.1415 / 180.0
+}
+
 pub fn random_in_unit_sphere() -> Vector {
     loop {
         let p = Vector::random_between(-1.0, 1.0);
