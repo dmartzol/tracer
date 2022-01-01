@@ -7,6 +7,7 @@ pub trait Material {
     fn scatter(&self, ray: &Ray, hit: &HitRecord) -> Option<(Ray, Vector)>;
 }
 
+#[derive(Copy, Clone)]
 pub struct Lambertian {
     albedo: Vector,
 }
@@ -31,6 +32,7 @@ impl Material for Lambertian {
     }
 }
 
+#[derive(Copy, Clone)]
 pub struct Metal {
     albedo: Vector,
     fuzz: f64,

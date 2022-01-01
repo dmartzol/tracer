@@ -51,10 +51,12 @@ fn my_scene() -> HitableList {
     let grey = Vector::new(0.8, 0.8, 0.8);
     let gold = Vector::new(0.8, 0.6, 0.2);
     let blue = Vector::new(0.1, 0.2, 0.5);
+    let white = Vector::new(1.0, 1.0, 1.0);
 
     let material_green = Lambertian::new(green);
     let _material_red = Lambertian::new(red);
     let material_blue = Lambertian::new(blue);
+    let _material_white = Lambertian::new(white);
     let _material_silver = Metal::new(grey, 0.3);
     let material_gold = Metal::new(gold, 1.0);
     let material_glass = Dielectric::new(1.5);
