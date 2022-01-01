@@ -100,7 +100,7 @@ pub fn random_unit_vector() -> Vector {
 }
 
 pub fn degrees_to_radians(degrees: f64) -> f64 {
-    degrees * 3.1415 / 180.0
+    degrees * std::f64::consts::PI / 180.0
 }
 
 pub fn random_in_unit_sphere() -> Vector {
