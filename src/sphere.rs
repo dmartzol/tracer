@@ -30,9 +30,8 @@ impl<M: Material + Sync> Hitable for Sphere<M> {
             let sqrt_discriminant = discriminant.sqrt();
             let t = (-b - sqrt_discriminant) / a;
             if t < t_max && t > t_min {
-                let p = ray.at(t);
-                let normal = (p - self.center) / self.radius;
-                return Some(HitRecord::new(t, p, normal, &self.material));
+                let normal = (ray.at(t) - self.center) / self.radius;
+                return Some(HitRecord::new(t, ray.at(t), normal, &self.material));
             }
             let t = (-b + sqrt_discriminant) / a;
             if t < t_max && t > t_min {

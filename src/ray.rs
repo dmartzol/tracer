@@ -1,7 +1,6 @@
 use crate::hitable::{Hitable, HitableList};
 use crate::vector::Vector;
 
-#[derive(Copy, Clone)]
 pub struct Ray {
     pub origin: Vector,
     pub direction: Vector,
@@ -12,11 +11,11 @@ impl Ray {
         Ray { origin, direction }
     }
 
-    pub fn at(self, t: f64) -> Vector {
+    pub fn at(&self, t: f64) -> Vector {
         self.origin + t * self.direction
     }
 
-    pub fn color(self, scene: &HitableList, depth: i64) -> Vector {
+    pub fn color(&self, scene: &HitableList, depth: i64) -> Vector {
         if depth <= 0 {
             return Vector::new(0.0, 0.0, 0.0);
         }

@@ -151,7 +151,7 @@ fn _random_scene() -> (HitableList, Camera) {
 fn main() {
     // Image
     let aspect_ratio = 16.0 / 9.0;
-    let image_width = 1600;
+    let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as usize;
     let samples_per_pixel = 500;
     let max_depth = 50;
