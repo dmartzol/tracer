@@ -19,7 +19,7 @@ impl<M: Material> Sphere<M> {
     }
 }
 
-impl<M: Material> Hitable for Sphere<M> {
+impl<M: Material + Sync> Hitable for Sphere<M> {
     fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let oc = ray.origin - self.center;
         let a = ray.direction.dot(ray.direction);
