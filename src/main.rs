@@ -11,7 +11,7 @@ use hitable::HitableList;
 use indicatif::{ProgressBar, ProgressStyle};
 use material::{Dielectric, Lambertian, Metal};
 use rayon::prelude::*;
-use sphere::Sphere;
+use sphere::{MovingSphere, Sphere};
 use tracer::{clamp, random_float, random_float_between};
 use vector::Vector;
 
@@ -28,7 +28,7 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
     print!("{} {} {}\n", r, g, b);
 }
 
-fn my_scene() -> (HitableList, Camera) {
+fn _my_scene() -> (HitableList, Camera) {
     // Camera
     let aspect_ratio = 16.0 / 9.0;
     let lookfrom = Vector::new(-2.0, 2.0, 1.0);
@@ -44,6 +44,8 @@ fn my_scene() -> (HitableList, Camera) {
         aspect_ratio,
         aperture,
         dist_to_focus,
+        0.0,
+        1.0,
     );
 
     let green = Vector::new(0.8, 0.8, 0.0);
@@ -82,7 +84,7 @@ fn my_scene() -> (HitableList, Camera) {
     return (scene, camera);
 }
 
-fn _random_scene() -> (HitableList, Camera) {
+fn random_scene() -> (HitableList, Camera) {
     // Camera
     let aspect_ratio = 16.0 / 9.0;
     let lookfrom = Vector::new(13.0, 2.0, 3.0);
@@ -98,6 +100,8 @@ fn _random_scene() -> (HitableList, Camera) {
         aspect_ratio,
         aperture,
         dist_to_focus,
+        0.0,
+        1.0,
     );
 
     let mut scene = HitableList::default();
@@ -121,7 +125,15 @@ fn _random_scene() -> (HitableList, Camera) {
                 // diffuse
                 let albedo = Vector::random().hadamard_product(Vector::random());
                 let sphere_material = Lambertian::new(albedo);
-                scene.push(Sphere::new(center, 0.2, sphere_material));
+                let center2 = center + Vector::new(0.0, random_float_between(0.0, 0.5), 0.0);
+                scene.push(MovingSphere::new(
+                    center,
+                    center2,
+                    0.0,
+                    1.0,
+                    0.2,
+                    sphere_material,
+                ));
             } else if choose_mat < 0.95 {
                 // metal
                 let albedo = Vector::random_between(0.5, 1.0);
@@ -153,10 +165,10 @@ fn main() {
     let aspect_ratio = 16.0 / 9.0;
     let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as usize;
-    let samples_per_pixel = 500;
+    let samples_per_pixel = 100;
     let max_depth = 50;
 
-    let (scene, camera) = my_scene();
+    let (scene, camera) = random_scene();
 
     print!("P3\n{} {}\n255\n", image_width, image_height);
 

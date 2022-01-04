@@ -4,11 +4,16 @@ use crate::vector::Vector;
 pub struct Ray {
     pub origin: Vector,
     pub direction: Vector,
+    pub time: f64,
 }
 
 impl Ray {
-    pub fn new(origin: Vector, direction: Vector) -> Ray {
-        Ray { origin, direction }
+    pub fn new(origin: Vector, direction: Vector, time: f64) -> Ray {
+        Ray {
+            origin,
+            direction,
+            time,
+        }
     }
 
     pub fn at(&self, t: f64) -> Vector {

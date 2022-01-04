@@ -1,4 +1,5 @@
 use crate::ray::Ray;
+use crate::tracer::random_float_between;
 use crate::vector::{degrees_to_radians, random_in_unit_disk, Vector};
 
 #[derive(Copy, Clone)]
@@ -10,6 +11,8 @@ pub struct Camera {
     u: Vector,
     v: Vector,
     lens_radius: f64,
+    time0: f64,
+    time1: f64,
 }
 
 impl Camera {
@@ -21,6 +24,8 @@ impl Camera {
         aspect_ratio: f64,
         aperture: f64,
         focus_dist: f64,
+        time0: f64,
+        time1: f64,
     ) -> Camera {
         let theta = degrees_to_radians(vfov);
         let h = (theta / 2.0).tan();
@@ -43,6 +48,8 @@ impl Camera {
             u: u,
             v: v,
             lens_radius: aperture / 2.0,
+            time0: time0,
+            time1: time1,
         }
     }
     pub fn get_ray(self, s: f64, t: f64) -> Ray {
@@ -51,6 +58,7 @@ impl Camera {
         Ray::new(
             self.origin + offset,
             self.lower_left_corner + s * self.horizontal + t * self.vertical - self.origin - offset,
+            random_float_between(self.time0, self.time1),
         )
     }
 }
