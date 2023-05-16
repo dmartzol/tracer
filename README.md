@@ -13,3 +13,13 @@ git clone https://github.com/dmartzol/tracer
 cd tracer
 cargo run --release src/main.rs > spheres.ppm
 ```
+
+## Notes
+
+Right now it only supports spheres.
+
+It supports 3 different materials:
+    - Lambertian
+    - Dielectric
+    - Metalic
+
