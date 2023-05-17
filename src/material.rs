@@ -12,6 +12,7 @@ pub struct Lambertian {
     albedo: Vector,
 }
 
+// Lambertian is a diffuse material
 impl Lambertian {
     pub fn new(v: Vector) -> Lambertian {
         Lambertian { albedo: v }
@@ -38,6 +39,7 @@ pub struct Metal {
     fuzz: f64,
 }
 
+// Metal is a reflective material
 impl Metal {
     pub fn new(v: Vector, f: f64) -> Metal {
         Metal { albedo: v, fuzz: f }
@@ -62,6 +64,7 @@ pub struct Dielectric {
     ir: f64, // index of refraction
 }
 
+// Dielectric is a transparent material
 impl Dielectric {
     pub fn new(x: f64) -> Dielectric {
         Dielectric { ir: x }
