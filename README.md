@@ -27,4 +27,6 @@ It supports 3 different materials:
 
 ![Example](https://github.com/dmartzol/tracer/blob/main/examples/spheres.png?raw=true)
 
+![Example](https://github.com/dmartzol/tracer/blob/main/examples/spheres.ppm?raw=true)
+
 
