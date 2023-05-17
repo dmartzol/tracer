@@ -19,7 +19,7 @@ cargo run --release src/main.rs > spheres.ppm
 Right now it only supports spheres.
 
 It supports 3 different materials:
-  - Lambertian
-  - Dielectric
+  - Lambertian (diffuse material)
+  - Dielectric (glass material)
   - Metalic
 
