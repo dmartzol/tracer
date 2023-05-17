@@ -23,3 +23,8 @@ It supports 3 different materials:
   - Dielectric (glass material)
   - Metalic
 
+## Examples
+
+![Example](https://github.com/dmartzol/tracer/blob/main/examples/spheres.png?raw=true)
+
+
