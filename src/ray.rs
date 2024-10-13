@@ -2,9 +2,9 @@ use crate::hitable::{Hitable, HitableList};
 use crate::vector::Vector;
 
 pub struct Ray {
-    pub origin: Vector,
-    pub direction: Vector,
-    pub time: f64,
+    origin: Vector,
+    direction: Vector,
+    time: f64,
 }
 
 impl Ray {
@@ -14,6 +14,18 @@ impl Ray {
             direction,
             time,
         }
+    }
+
+    pub fn origin(&self) -> Vector {
+        self.origin
+    }
+
+    pub fn direction(&self) -> Vector {
+        self.direction
+    }
+
+    pub fn time(&self) -> f64 {
+        self.time
     }
 
     pub fn at(&self, t: f64) -> Vector {

@@ -28,7 +28,7 @@ impl Material for Lambertian {
             scatter_direction = hit.normal;
         }
 
-        let scattered = Ray::new(hit.p, scatter_direction, ray.time);
+        let scattered = Ray::new(hit.p, scatter_direction, ray.time());
         Some((scattered, self.albedo))
     }
 }
@@ -48,11 +48,11 @@ impl Metal {
 
 impl Material for Metal {
     fn scatter(&self, ray: &Ray, hit: &HitRecord) -> Option<(Ray, Vector)> {
-        let reflected = ray.direction.unit().reflect(hit.normal);
+        let reflected = ray.direction().unit().reflect(hit.normal);
         let scattered = Ray::new(
             hit.p,
             reflected + self.fuzz * random_in_unit_sphere(),
-            ray.time,
+            ray.time(),
         );
         let attenuation = self.albedo;
         Some((scattered, attenuation))
@@ -75,24 +75,24 @@ impl Material for Dielectric {
     fn scatter(&self, ray: &Ray, hit: &HitRecord) -> Option<(Ray, Vector)> {
         let attenuation = Vector::new(1.0, 1.0, 1.0);
 
-        let (outward_normal, ni_over_nt, cosine) = if ray.direction.dot(hit.normal) > 0.0 {
-            let cosine = self.ir * ray.direction.dot(hit.normal) / ray.direction.magnitude();
+        let (outward_normal, ni_over_nt, cosine) = if ray.direction().dot(hit.normal) > 0.0 {
+            let cosine = self.ir * ray.direction().dot(hit.normal) / ray.direction().magnitude();
             (hit.normal.reverse(), self.ir, cosine)
         } else {
-            let cosine = -ray.direction.dot(hit.normal) / ray.direction.magnitude();
+            let cosine = -ray.direction().dot(hit.normal) / ray.direction().magnitude();
             (hit.normal, 1.0 / self.ir, cosine)
         };
 
-        if let Some(refracted) = ray.direction.refract(outward_normal, ni_over_nt) {
+        if let Some(refracted) = ray.direction().refract(outward_normal, ni_over_nt) {
             let reflect_prob = schlick(cosine, self.ir);
             if rand::thread_rng().gen::<f64>() >= reflect_prob {
-                let scattered = Ray::new(hit.p, refracted, ray.time);
+                let scattered = Ray::new(hit.p, refracted, ray.time());
                 return Some((scattered, attenuation));
             }
         }
         // let reflected = reflect(&ray.direction(), &hit.normal);
-        let reflected = ray.direction.reflect(hit.normal);
-        let scattered = Ray::new(hit.p, reflected, ray.time);
+        let reflected = ray.direction().reflect(hit.normal);
+        let scattered = Ray::new(hit.p, reflected, ray.time());
         Some((scattered, attenuation))
     }
 }
