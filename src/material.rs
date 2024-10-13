@@ -36,13 +36,16 @@ impl Material for Lambertian {
 #[derive(Copy, Clone)]
 pub struct Metal {
     albedo: Vector,
-    fuzz: f64,
+    fuzziness_factor: f64,
 }
 
 // Metal is a reflective material
 impl Metal {
     pub fn new(v: Vector, f: f64) -> Metal {
-        Metal { albedo: v, fuzz: f }
+        Metal {
+            albedo: v,
+            fuzziness_factor: f,
+        }
     }
 }
 
@@ -51,7 +54,7 @@ impl Material for Metal {
         let reflected = ray.direction().unit().reflect(hit.normal);
         let scattered = Ray::new(
             hit.p,
-            reflected + self.fuzz * random_in_unit_sphere(),
+            reflected + self.fuzziness_factor * random_in_unit_sphere(),
             ray.time(),
         );
         let attenuation = self.albedo;
@@ -61,13 +64,15 @@ impl Material for Metal {
 
 #[derive(Copy, Clone)]
 pub struct Dielectric {
-    ir: f64, // index of refraction
+    refraction_index: f64, // index of refraction
 }
 
 // Dielectric is a transparent material
 impl Dielectric {
     pub fn new(x: f64) -> Dielectric {
-        Dielectric { ir: x }
+        Dielectric {
+            refraction_index: x,
+        }
     }
 }
 
@@ -76,15 +81,16 @@ impl Material for Dielectric {
         let attenuation = Vector::new(1.0, 1.0, 1.0);
 
         let (outward_normal, ni_over_nt, cosine) = if ray.direction().dot(hit.normal) > 0.0 {
-            let cosine = self.ir * ray.direction().dot(hit.normal) / ray.direction().magnitude();
-            (hit.normal.reverse(), self.ir, cosine)
+            let cosine = self.refraction_index * ray.direction().dot(hit.normal)
+                / ray.direction().magnitude();
+            (hit.normal.reverse(), self.refraction_index, cosine)
         } else {
             let cosine = -ray.direction().dot(hit.normal) / ray.direction().magnitude();
-            (hit.normal, 1.0 / self.ir, cosine)
+            (hit.normal, 1.0 / self.refraction_index, cosine)
         };
 
         if let Some(refracted) = ray.direction().refract(outward_normal, ni_over_nt) {
-            let reflect_prob = schlick(cosine, self.ir);
+            let reflect_prob = schlick(cosine, self.refraction_index);
             if rand::thread_rng().gen::<f64>() >= reflect_prob {
                 let scattered = Ray::new(hit.p, refracted, ray.time());
                 return Some((scattered, attenuation));
