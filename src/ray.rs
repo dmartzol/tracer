@@ -32,7 +32,7 @@ impl Ray {
                 return Vector::new(0.0, 0.0, 0.0);
             }
         } else {
-            let t = 0.5 * (self.direction.unit().y + 1.0);
+            let t = 0.5 * (self.direction.unit().y() + 1.0);
             return (1.0 - t) * Vector::new(1.0, 1.0, 1.0) + t * Vector::new(0.5, 0.7, 1.0);
         }
     }

@@ -21,9 +21,9 @@ fn write_color(mut color: Vector, samples_per_pixel: i64) {
     color = color.scale(scale);
 
     // Gamma-correct for gamma=2.0.
-    let r = (256.0 * clamp(color.x.sqrt(), 0.0, 0.999)) as i64;
-    let g = (256.0 * clamp(color.y.sqrt(), 0.0, 0.999)) as i64;
-    let b = (256.0 * clamp(color.z.sqrt(), 0.0, 0.999)) as i64;
+    let r = (256.0 * clamp(color.x().sqrt(), 0.0, 0.999)) as i64;
+    let g = (256.0 * clamp(color.y().sqrt(), 0.0, 0.999)) as i64;
+    let b = (256.0 * clamp(color.z().sqrt(), 0.0, 0.999)) as i64;
 
     print!("{} {} {}\n", r, g, b);
 }
