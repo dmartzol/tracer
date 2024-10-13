@@ -173,11 +173,11 @@ fn main() {
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
     let progress_bar = ProgressBar::new((image_height * image_width) as u64);
-    let style = ProgressStyle::default_bar()
-        .template(
-            "[{elapsed_precise}] {bar:100.cyan/blue} {percent}% {pos:>7}/{len:7} [{eta_precise}] {msg}",
-        )
-        .progress_chars("#>-");
+    let style = ProgressStyle::with_template(
+        "[{elapsed_precise}] {bar:100.cyan/blue} {percent}% {pos:>7}/{len:7} [{eta_precise}] {msg}",
+    )
+    .unwrap()
+    .progress_chars("#>-");
     progress_bar.set_style(style);
 
     let mut screen = vec![Vector::default(); image_height * image_width];
