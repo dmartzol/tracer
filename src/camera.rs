@@ -17,17 +17,17 @@ pub struct Camera {
 
 impl Camera {
     pub fn new(
-        lookfrom: Vector,
-        lookat: Vector,
-        vup: Vector,
-        vfov: f64,
-        aspect_ratio: f64,
+        lookfrom: Vector, // point camera is looking from
+        lookat: Vector,   // point camera is looking at
+        vup: Vector,      // camera-relative "up" direction
+        vertical_field_of_view: f64,
+        aspect_ratio: f64, // ratio of image width over height
         aperture: f64,
-        focus_dist: f64,
+        focus_dist: f64, // distance from camera lookfrom point to plane of perfect focus
         time0: f64,
         time1: f64,
     ) -> Camera {
-        let theta = degrees_to_radians(vfov);
+        let theta = degrees_to_radians(vertical_field_of_view);
         let h = (theta / 2.0).tan();
         let viewport_height = 2.0 * h;
         let viewport_width = aspect_ratio * viewport_height;
