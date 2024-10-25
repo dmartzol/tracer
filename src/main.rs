@@ -17,11 +17,16 @@ fn main() {
     print!("P3\n{} {}\n255\n", image_width, image_height);
 
     let progress_bar = ProgressBar::new((image_height * image_width) as u64);
-    let style = ProgressStyle::with_template(
+    let style = match ProgressStyle::with_template(
         "[{elapsed_precise}] {bar:100.cyan/blue} {percent}% {pos:>7}/{len:7} [{eta_precise}] {msg}",
-    )
-    .unwrap()
-    .progress_chars("#>-");
+    ) {
+        Ok(s) => s,
+        Err(e) => {
+            eprintln!("Error creating progress style: {}", e);
+            return;
+        }
+    };
+    let style = style.progress_chars("#>-");
     progress_bar.set_style(style);
 
     let mut screen = vec![Vector::default(); image_height * image_width];
@@ -31,11 +36,11 @@ fn main() {
         .enumerate()
         .for_each(|(index, pixel)| {
             let i = index % image_width;
-            let j = image_height - index / image_width;
+            let j = image_height - 1 - index / image_width;
             let mut pixel_color = Vector::default();
             for _ in 0..samples_per_pixel {
                 let u = (i as f64 + random_float()) / (image_width - 1) as f64;
-                let v = (j as f64 + random_float()) / (image_height - 1) as f64;
+                let v = (j as f64 + random_float()) / image_height as f64;
                 let ray = camera.get_ray(u, v);
                 pixel_color = pixel_color + ray.color(&scene, max_depth);
             }

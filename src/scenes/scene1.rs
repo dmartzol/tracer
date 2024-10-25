@@ -12,16 +12,19 @@ pub fn scene() -> (HitableList, Camera) {
     let vup = Vector::new(0.0, 1.0, 0.0);
     let dist_to_focus = (lookfrom - lookat).length();
     let aperture = 0.1;
+    let vertical_field_of_view = 20.0;
+    let time0 = 0.0;
+    let time1 = 1.0;
     let camera = Camera::new(
         lookfrom,
         lookat,
         vup,
-        20.0,
+        vertical_field_of_view,
         aspect_ratio,
         aperture,
         dist_to_focus,
-        0.0,
-        1.0,
+        time0,
+        time1,
     );
 
     let green = Vector::new(0.8, 0.8, 0.0);
