@@ -32,3 +32,12 @@ pub fn write_color(mut color: Vector, samples_per_pixel: i64) {
 
     print!("{} {} {}\n", r, g, b);
 }
+
+// Utility function to ensure t0 is always the smaller value and t1 is the larger value
+pub fn order_pair(a: f64, b: f64) -> (f64, f64) {
+    if a < b {
+        (a, b)
+    } else {
+        (b, a)
+    }
+}

@@ -1,5 +1,7 @@
+pub mod aabb;
 pub mod camera;
 pub mod hitable;
+pub mod interval;
 pub mod material;
 pub mod ray;
 pub mod scenes;

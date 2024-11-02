@@ -25,6 +25,15 @@ impl Vector {
         self.z
     }
 
+    pub fn axis_value(self, n: i64) -> f64 {
+        if n == 0 {
+            return self.x;
+        } else if n == 1 {
+            return self.y;
+        }
+        return self.z;
+    }
+
     pub fn add(self, other: Vector) -> Vector {
         return Vector {
             x: self.x + other.x,
