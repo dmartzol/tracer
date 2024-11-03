@@ -1,7 +1,7 @@
 use crate::tracer::{random_float, random_float_between};
 use std::ops;
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Vector {
     x: f64,
     y: f64,

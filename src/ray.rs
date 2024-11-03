@@ -1,6 +1,7 @@
 use crate::hitable::{Hitable, HitableList};
 use crate::vector::Vector;
 
+#[derive(Copy, Clone, Debug)]
 pub struct Ray {
     origin: Vector,
     direction: Vector,
