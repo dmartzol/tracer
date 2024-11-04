@@ -2,7 +2,7 @@ use crate::camera::Camera;
 use crate::hitable::HitableList;
 use crate::material::{Dielectric, Lambertian, Metal};
 use crate::sphere::{MovingSphere, Sphere};
-use crate::tracer::{random_float, random_float_between};
+use crate::util::{random_float, random_float_between};
 use crate::vector::Vector;
 
 pub fn scene() -> (HitableList, Camera) {

@@ -7,5 +7,5 @@ pub mod material;
 pub mod ray;
 pub mod scenes;
 pub mod sphere;
-pub mod tracer;
+pub mod util;
 pub mod vector;

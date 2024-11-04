@@ -1,7 +1,7 @@
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 use tracer::scenes;
-use tracer::tracer::{random_float, write_color};
+use tracer::util::{random_float, write_color};
 use tracer::vector::Vector;
 
 fn main() {

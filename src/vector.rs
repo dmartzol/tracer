@@ -1,4 +1,4 @@
-use crate::tracer::{random_float, random_float_between};
+use crate::util::{random_float, random_float_between};
 use std::ops;
 
 #[derive(Copy, Clone, Debug, Default)]

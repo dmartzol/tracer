@@ -1,5 +1,5 @@
 use crate::ray::Ray;
-use crate::tracer::random_float_between;
+use crate::util::random_float_between;
 use crate::vector::{degrees_to_radians, random_in_unit_disk, Vector};
 
 #[derive(Copy, Clone)]
