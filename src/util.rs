@@ -15,6 +15,11 @@ pub fn random_float() -> f64 {
     return random_float_between(0.0, 1.0);
 }
 
+pub fn random_integer(min: i64, max: i64) -> i64 {
+    let mut rng = rand::thread_rng();
+    rng.gen_range(min..=max)
+}
+
 pub fn random_float_between(min: f64, max: f64) -> f64 {
     let mut rng = rand::thread_rng();
     return rng.gen_range(min..max);
