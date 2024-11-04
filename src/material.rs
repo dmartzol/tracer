@@ -1,4 +1,4 @@
-use crate::hitable::HitRecord;
+use crate::hit_record::HitRecord;
 use crate::ray::Ray;
 use crate::vector::{random_in_unit_sphere, random_unit_vector, Vector};
 use rand::Rng;

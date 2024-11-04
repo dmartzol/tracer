@@ -1,33 +1,16 @@
-use crate::material::Material;
+use crate::aabb::Aabb;
+use crate::hit_record::HitRecord;
 use crate::ray::Ray;
-use crate::vector::Vector;
-
-#[derive(Copy, Clone)]
-pub struct HitRecord<'a> {
-    pub t: f64,
-    pub p: Vector,
-    pub normal: Vector,
-    pub material: &'a dyn Material,
-}
-
-impl HitRecord<'_> {
-    pub fn new(t: f64, p: Vector, normal: Vector, material: &dyn Material) -> HitRecord {
-        HitRecord {
-            t,
-            p,
-            normal,
-            material,
-        }
-    }
-}
 
 pub trait Hitable: Sync {
     fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
+    fn bounding_box(&self) -> Aabb;
 }
 
 #[derive(Default)]
 pub struct HitableList {
     list: Vec<Box<dyn Hitable>>,
+    bbox: Aabb,
 }
 
 impl HitableList {
@@ -47,5 +30,9 @@ impl Hitable for HitableList {
             }
         }
         return hit_anything;
+    }
+
+    fn bounding_box(&self) -> Aabb {
+        self.bbox
     }
 }

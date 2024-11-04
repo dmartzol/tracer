@@ -6,10 +6,18 @@ pub struct Interval {
 
 impl Interval {
     pub fn new(start: f64, end: f64) -> Interval {
-        if start <= end {
-            Interval { start, end }
-        } else {
-            Interval { end, start }
+        Interval {
+            start: f64::min(start, end),
+            end: f64::max(start, end),
+        }
+    }
+
+    pub fn new_from_intervals(a: Interval, b: Interval) -> Self {
+        let min = f64::min(a.start(), b.start());
+        let max = f64::max(a.end(), b.end());
+        Interval {
+            start: min,
+            end: max,
         }
     }
 

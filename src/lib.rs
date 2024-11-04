@@ -1,5 +1,6 @@
 pub mod aabb;
 pub mod camera;
+pub mod hit_record;
 pub mod hitable;
 pub mod interval;
 pub mod material;

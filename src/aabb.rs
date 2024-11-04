@@ -14,9 +14,11 @@ impl Aabb {
     pub fn new() -> Aabb {
         Aabb::default()
     }
-    pub fn new_from_intervals(x: Interval, y: Interval, z: Interval) -> Aabb {
+
+    pub fn new_from_interval(x: Interval, y: Interval, z: Interval) -> Aabb {
         Aabb { x, y, z }
     }
+
     pub fn new_from_points(a: Vector, b: Vector) -> Aabb {
         // Treat the two points a and b as extrema for the bounding box, so we don't require a
         // particular minimum/maximum coordinate order.
@@ -25,6 +27,14 @@ impl Aabb {
             x: Interval::new(a.x(), b.x()),
             y: Interval::new(a.y(), b.y()),
             z: Interval::new(a.z(), b.z()),
+        }
+    }
+
+    pub fn new_from_bounding_boxes(box0: Aabb, box1: Aabb) -> Aabb {
+        Aabb {
+            x: Interval::new_from_intervals(box0.x, box1.x),
+            y: Interval::new_from_intervals(box0.y, box1.y),
+            z: Interval::new_from_intervals(box0.z, box1.z),
         }
     }
 
