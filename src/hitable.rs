@@ -2,7 +2,7 @@ use crate::aabb::Aabb;
 use crate::hit_record::HitRecord;
 use crate::ray::Ray;
 
-pub trait Hitable: Sync {
+pub trait Hitable: Sync + Clone {
     fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord>;
     fn bounding_box(&self) -> Aabb;
 }
